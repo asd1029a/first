@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <section id="about">
+        <div class="row about-container text-center">
+            <h1 class="">회원가입</h1>
+            <form method="post" >
+                <ul>
+                    <li>
+                        <label>아이디 : <input type="text" placeholder="아이디를 입력하세요."></label>
+                    </li>
+                    <li>
+                        <label>비밀번호 : <input type="password" placeholder="비밀번호를 입력하세요."></label>
+                    </li>
+                    <li>
+                        <label>이름 : <input type="text" placeholder="이름을 입력하세요."></label>
+                    </li>
+                    <li>
+                        <label>전화번호 : <input type="tel" placeholder="전화번호를 입력하세요."></label>
+                    </li>
+                    <li>
+                        <label>이메일 : <input type="email" placeholder="이메일을 입력하세요."></label>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </section>
+</div>
+</html>
