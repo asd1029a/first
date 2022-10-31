@@ -4,25 +4,29 @@
       layout:decorate="~{layouts/layout}">
 
 <div layout:fragment="content">
-    <section id="about">
+    <section id="about" class="m-auto">
         <div class="row about-container text-center">
             <h1 class="">회원가입</h1>
-            <form method="post" >
+            <form id="loginForm" method="post" action="/login/new">
                 <ul>
                     <li>
-                        <label>아이디 : <input type="text" placeholder="아이디를 입력하세요."></label>
+                        <label>아이디 : <input type="text" id="memberId" name="memberId" placeholder="아이디를 입력하세요."></label>
                     </li>
                     <li>
-                        <label>비밀번호 : <input type="password" placeholder="비밀번호를 입력하세요."></label>
+                        <label>비밀번호 : <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요."></label>
                     </li>
                     <li>
-                        <label>이름 : <input type="text" placeholder="이름을 입력하세요."></label>
+                        <label>이름 : <input type="text" id="name" name="name" placeholder="이름을 입력하세요."></label>
                     </li>
                     <li>
-                        <label>전화번호 : <input type="tel" placeholder="전화번호를 입력하세요."></label>
+                        <label>전화번호 : <input type="tel" id="phoneNum" name="phoneNum" placeholder="전화번호를 입력하세요."></label>
                     </li>
                     <li>
-                        <label>이메일 : <input type="email" placeholder="이메일을 입력하세요."></label>
+                        <label>이메일 : <input type="email" id="email" name="email" placeholder="이메일을 입력하세요."></label>
+                    </li>
+                    <li>
+                        <button>가입</button>
+                        <button>가입 취소</button>
                     </li>
                 </ul>
             </form>
