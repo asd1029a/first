@@ -19,25 +19,26 @@ public class MemberService {
 
     @Transactional
     public void save(MemberDto memberDto) {
-        memberRepository.findById(memberDto.getId()).orElseGet(() -> {
-            memberDto.setRole(Role.ROLE_ADMIN);
-            if (!checkDuplicate(memberDto)) {
-                Member member = new Member(memberDto);
-                memberRepository.save(member);
-                return member;
-            } else {
-                throw new DuplicationIdException();
-            }
-        });
+        memberDto.setRole(Role.ROLE_ADMIN);
+        Member saveMember = new Member(memberDto);
+        memberRepository.save(saveMember);
     }
 
+    @Transactional
     public void delete(Long memberId) {
         memberRepository.deleteById(memberId);
     }
 
-    public boolean checkDuplicate(MemberDto memberDto) {
-        String findEmail = memberDto.getEmail();
-//        memberRepository.findByEmail(findEmail).orElseThrow(DuplicationIdException::new);
-        return memberRepository.existsByEmail(findEmail);
+    public boolean checkDuplicate(String memberEmail) {
+        return memberRepository.existsByEmail(memberEmail);
+    }
+
+    @Transactional
+    public void update(MemberDto memberDto) {
+        Member member = memberRepository
+                .findById(memberDto.getId())
+                .orElseThrow(DuplicationIdException::new);
+
+        member.modMember(memberDto);
     }
 }

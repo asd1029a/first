@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -28,6 +29,9 @@ public class Member extends BasicEntity implements UserDetails {
 
     private String phoneNum;
 
+    @OneToMany(mappedBy = "member")
+    private List<Order> orderList = new ArrayList<>();
+
     @Embedded
     private Address address;
 
@@ -41,6 +45,11 @@ public class Member extends BasicEntity implements UserDetails {
         this.phoneNum = memberDto.getPhoneNum();
         this.address = memberDto.getAddress();
         this.role = memberDto.getRole();
+    }
+    public void modMember(MemberDto memberDto) {
+        this.password = memberDto.getPassword();
+        this.phoneNum = memberDto.getPhoneNum();
+        this.address = memberDto.getAddress();
     }
 
     @Override

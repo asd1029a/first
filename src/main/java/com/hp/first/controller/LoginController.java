@@ -2,6 +2,7 @@ package com.hp.first.controller;
 
 import com.hp.first.dto.MemberDto;
 import com.hp.first.entity.Member;
+import com.hp.first.exception.DuplicationIdException;
 import com.hp.first.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,10 @@ public class LoginController {
 
     @PostMapping
     public String newMember(@RequestBody MemberDto memberDto) {
+        if(memberService.checkDuplicate(memberDto.getEmail())) {
+            new DuplicationIdException("중복된 이메일입니다.");
+            return "중복된 이메일로 인해 저장실패";
+        }
         memberService.save(memberDto);
         return "저장완료";
     }
@@ -27,7 +32,7 @@ public class LoginController {
     @PutMapping("/{memberId}")
     public String modMember(@RequestBody MemberDto memberDto, @PathVariable Long memberId) {
         memberDto.setId(memberId);
-        memberService.save(memberDto);
+        memberService.update(memberDto);
         return "수정완료";
     }
 

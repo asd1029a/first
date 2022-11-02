@@ -17,6 +17,7 @@ public class Item {
 
     private int price;
 
+    @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
 
 }
