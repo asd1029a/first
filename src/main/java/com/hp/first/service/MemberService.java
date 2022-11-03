@@ -6,6 +6,10 @@ import com.hp.first.entity.Role;
 import com.hp.first.exception.DuplicationIdException;
 import com.hp.first.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,15 +17,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void save(MemberDto memberDto) {
-        memberDto.setRole(Role.ROLE_ADMIN);
-        Member saveMember = new Member(memberDto);
-        memberRepository.save(saveMember);
+    public Member save(Member member) {
+        checkDuplicate(member.getEmail());
+        return memberRepository.save(member);
     }
 
     @Transactional
@@ -29,16 +32,24 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
-    public boolean checkDuplicate(String memberEmail) {
-        return memberRepository.existsByEmail(memberEmail);
+    public void checkDuplicate(String memberEmail) {
+        Member member = memberRepository.findByEmail(memberEmail);
+        if(member != null) {
+            throw new IllegalStateException("중복된 이메일입니다.");
+        }
     }
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberRepository.findByEmail(email);
 
-    @Transactional
-    public void update(MemberDto memberDto) {
-        Member member = memberRepository
-                .findById(memberDto.getId())
-                .orElseThrow(DuplicationIdException::new);
+        if(member == null) {
+            throw new UsernameNotFoundException(email);
+        }
 
-        member.modMember(memberDto);
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
     }
 }

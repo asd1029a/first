@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public void createMember() {
         MemberDto memberDto = new MemberDto();
@@ -27,9 +30,9 @@ class MemberRepositoryTest {
             memberDto.setAddress(new Address("1","길","도시"));
             memberDto.setEmail("test"+i+"@naver.com");
             memberDto.setPassword("1234");
-            memberDto.setRole(Role.ROLE_MEMBER);
             memberDto.setPhoneNum("01044440220");
-            Member member = new Member(memberDto);
+            Member member = Member.createMember(memberDto,passwordEncoder);
+            member.setRole(Role.ROLE_ADMIN);
             memberRepository.save(member);
         }
     }

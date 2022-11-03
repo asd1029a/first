@@ -1,9 +1,13 @@
 package com.hp.first.entity;
 
 import com.hp.first.dto.OrderDto;
+import com.hp.first.exception.CancelCantException;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,23 +22,49 @@ public class Order extends BasicEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private OrderDelivery orderDelivery;
 
+    private LocalDateTime orderDate;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    public Order createOrder(OrderDto orderDto) {
-        this.id = orderDto.getId();
-        this.member = orderDto.getMember();
-        this.orderItemList = orderDto.getOrderItemList();
-        this.orderDelivery = OrderDelivery.READY;
-        this.orderStatus = OrderStatus.ORDER;
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItemList.add(orderItem);
+        orderItem.setOrder(this);
     }
 
-    public void cancelOrder(Order order) {
+    public void setMember(Member member) {
+        this.member = member;
+    }
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
+    public void setOrderDate(LocalDateTime localDateTime) {
+        this.orderDate = localDateTime;
+    }
+    public static Order createOrder(Member member,List<OrderItem> orderItemList) {
+        Order order = new Order();
+        order.setMember(member);
+        for (OrderItem orderItem : orderItemList) {
+            order.addOrderItem(orderItem);
+            orderItem.setOrder(order);
+        }
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    public int totalPrice() {
+        int total = 0;
+        for(OrderItem orderItem : orderItemList) {
+            total += orderItem.getTotalPrice();
+        }
+        return total;
     }
 }

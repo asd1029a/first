@@ -4,15 +4,19 @@ import com.hp.first.dto.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member extends BasicEntity implements UserDetails {
@@ -28,29 +32,25 @@ public class Member extends BasicEntity implements UserDetails {
     private String password;
 
     private String phoneNum;
-
-    @OneToMany(mappedBy = "member")
-    private List<Order> orderList = new ArrayList<>();
-
     @Embedded
     private Address address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Member(MemberDto memberDto) {
-        this.name = memberDto.getName();
-        this.email = memberDto.getEmail();
-        this.password = memberDto.getPassword();
-        this.phoneNum = memberDto.getPhoneNum();
-        this.address = memberDto.getAddress();
-        this.role = memberDto.getRole();
+    public static Member createMember(MemberDto memberDto, PasswordEncoder passwordEncoder) {
+        Member member = new Member();
+        member.setName(memberDto.getName());
+        member.setEmail(memberDto.getEmail());
+        member.setAddress(memberDto.getAddress());
+        member.setPhoneNum(memberDto.getPhoneNum());
+        String enPass = passwordEncoder.encode(memberDto.getPassword());
+        member.setPassword(enPass);
+        member.setRole(Role.ROLE_ADMIN);
+
+        return member;
     }
-    public void modMember(MemberDto memberDto) {
-        this.password = memberDto.getPassword();
-        this.phoneNum = memberDto.getPhoneNum();
-        this.address = memberDto.getAddress();
-    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

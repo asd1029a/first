@@ -7,6 +7,8 @@ import com.hp.first.entity.OrderStatus;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class OrderDto {

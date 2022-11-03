@@ -16,9 +16,6 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 public class MemberDto {
 
-    @Column(name = "member_id")
-    private Long id;
-
     private String name;
 
     private String email;
@@ -30,7 +27,5 @@ public class MemberDto {
     @Embedded
     private Address address;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
 }
