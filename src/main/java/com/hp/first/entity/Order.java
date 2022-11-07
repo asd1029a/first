@@ -1,7 +1,7 @@
 package com.hp.first.entity;
 
-import com.hp.first.dto.OrderDto;
-import com.hp.first.exception.CancelCantException;
+import com.hp.first.status.OrderDelivery;
+import com.hp.first.status.OrderStatus;
 import lombok.Getter;
 
 import javax.persistence.*;

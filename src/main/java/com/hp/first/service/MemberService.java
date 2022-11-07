@@ -1,9 +1,6 @@
 package com.hp.first.service;
 
-import com.hp.first.dto.MemberDto;
 import com.hp.first.entity.Member;
-import com.hp.first.entity.Role;
-import com.hp.first.exception.DuplicationIdException;
 import com.hp.first.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -13,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

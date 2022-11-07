@@ -1,12 +1,11 @@
 package com.hp.first.dto;
 
 import com.hp.first.entity.Member;
-import com.hp.first.entity.OrderDelivery;
+import com.hp.first.status.OrderDelivery;
 import com.hp.first.entity.OrderItem;
-import com.hp.first.entity.OrderStatus;
+import com.hp.first.status.OrderStatus;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

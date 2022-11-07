@@ -3,7 +3,7 @@ package com.hp.first.repository;
 import com.hp.first.dto.MemberDto;
 import com.hp.first.entity.Address;
 import com.hp.first.entity.Member;
-import com.hp.first.entity.Role;
+import com.hp.first.status.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

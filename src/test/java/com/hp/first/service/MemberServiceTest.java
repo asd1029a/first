@@ -2,26 +2,18 @@ package com.hp.first.service;
 
 import com.hp.first.dto.MemberDto;
 import com.hp.first.entity.Address;
-import com.hp.first.entity.Member;
-import com.hp.first.entity.Role;
+import com.hp.first.status.Role;
 import com.hp.first.exception.DuplicationIdException;
 import com.hp.first.repository.MemberRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
