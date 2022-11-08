@@ -16,7 +16,7 @@ public abstract class BasicEntity extends BasicTimeEntity{
 
     @CreatedBy
     @Column(updatable = false)
-    private String createBy;
+    private String createdBy;
 
     @LastModifiedBy
     private String modifiedBy;

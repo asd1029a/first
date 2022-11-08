@@ -3,13 +3,19 @@ package com.hp.first.entity;
 import com.hp.first.dto.ItemFormDto;
 import com.hp.first.exception.OutOfStockException;
 import com.hp.first.status.ItemStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-public class Item {
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class Item extends BasicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
