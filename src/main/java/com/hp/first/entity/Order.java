@@ -61,10 +61,6 @@ public class Order extends BasicEntity {
     }
 
     public int totalPrice() {
-        int total = 0;
-        for(OrderItem orderItem : orderItemList) {
-            total += orderItem.getTotalPrice();
-        }
-        return total;
+        return orderItemList.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 }

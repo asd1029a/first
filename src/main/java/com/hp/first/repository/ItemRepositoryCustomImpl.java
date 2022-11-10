@@ -2,9 +2,11 @@ package com.hp.first.repository;
 
 import com.hp.first.dto.ItemSearchDto;
 import com.hp.first.dto.MainItemDto;
+import com.hp.first.dto.QMainItemDto;
 import com.hp.first.entity.Item;
 import com.hp.first.entity.QBasicTimeEntity;
 import com.hp.first.entity.QItem;
+import com.hp.first.entity.QItemImg;
 import com.hp.first.status.ItemStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
@@ -50,9 +52,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     private BooleanExpression searchByLike(String searchBy, String searchQuery) {
 
         if("name".equals(searchBy)) {
-            return QItem.item.name.like("%"+searchQuery+"%");
+            return QItem.item.name.contains(searchQuery);
         } else if("createdBy".equals(searchBy)) {
-            return QItem.item.createdBy.like("%"+searchQuery+"%");
+            return QItem.item.createdBy.contains(searchQuery);
         }
         return null;
     }
@@ -85,6 +87,34 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     @Override
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        return null;
+        QItem qItem = QItem.item;
+        QItemImg qItemImg = QItemImg.itemImg;
+
+        List<MainItemDto> content = queryFactory
+                .select(
+                        new QMainItemDto(
+                                qItem.id,
+                                qItem.name,
+                                qItem.itemDetail,
+                                qItemImg.url,
+                                qItem.price
+                        )
+                )
+                .from(qItemImg)
+                .join(qItemImg.item, qItem)
+                .where(qItemImg.repImgYn.eq("Y"))
+                .where(itemNameLike(itemSearchDto.getSearchQuery()))
+                .orderBy(qItem.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = queryFactory.select(Wildcard.count)
+                .from(qItemImg)
+                .join(qItemImg.item, qItem)
+                .where(qItemImg.repImgYn.eq("Y"))
+                .where(itemNameLike(itemSearchDto.getSearchQuery()))
+                .fetchOne();
+        return new PageImpl<>(content, pageable, total);
     }
 }
